@@ -1,5 +1,7 @@
 .trips-list {
   width: 100%;
-  height: 150px;
+  height: 200px;
   background-color: #d7ebfd;
+  display: flex;
+  gap: 15px;
 }

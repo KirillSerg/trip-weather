@@ -1,6 +1,6 @@
 .conteiner {
   max-width: var(--main-width);
-  margin: 20px auto;
+  margin: 30px auto;
   padding: 15px;
   background-color: #f0f0f0;
   display: flex;

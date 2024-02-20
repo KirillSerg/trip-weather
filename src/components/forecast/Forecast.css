@@ -1,5 +1,9 @@
 .forecast {
   width: 100%;
-  height: 200px;
+  height: 150px;
   background-color: #d7ebfd;
+}
+
+.title {
+  margin: 0 0 10px 0;
 }
