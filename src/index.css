@@ -1,5 +1,5 @@
 html {
-  --main-width: 1240px;
+  --main-width: 1080px;
 }
 
 :root {
@@ -13,4 +13,16 @@ html {
 
 body {
   margin: 0;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+  border-radius: 100px;
+}
+
+::-webkit-scrollbar-thumb {
+  width: 8px;
+  border-radius: 100px;
+  background: #909db4;
 }

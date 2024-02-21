@@ -2,41 +2,52 @@ import { useState } from "react";
 import { useAtom } from "jotai";
 import { AsyncPaginate } from "react-select-async-paginate";
 import { addTripAtom, isCreatTripAtom } from "../../Store";
-import { getCityOptions } from "../../services/Services";
-import { Location } from "../../types/common";
+import { getCities } from "../../services/Services";
+import { City } from "../../types/common";
 import "./Modal.css";
+import { mockImgCities } from "../../assets/mockCiyImg";
 
 const Modal = () => {
   const [isCreatTrip, setIsCreateTrip] = useAtom(isCreatTripAtom);
 
-  const [location, setLocation] = useState<Location | null>(null);
+  const [city, setCity] = useState<City | null>(null);
   const [, addTrip] = useAtom(addTripAtom);
   const [startDate, setStartDate] = useState<string>("");
   const [endDate, setEndDate] = useState<string>("");
 
-  const handleOnChange = (searchData: Location | null) => {
-    setLocation(searchData);
+  const handleOnChange = (searchData: City | null) => {
+    setCity(searchData);
   };
 
   const handleAddTrip = () => {
-    if (location) {
-      const [lat, lon] = location.value.split(" ");
+    if (city) {
+      const [lat, lon] = city.value.split(" ");
       addTrip({
+        id: crypto.randomUUID(),
+        name: city.label,
         lat: lat,
         lon: lon,
         startDate,
         endDate,
+        img: mockImgCities[Math.floor(Math.random() * mockImgCities.length)],
       });
-      setLocation(null);
+      setCity(null);
       setStartDate("");
       setEndDate("");
     }
   };
 
+  const handleCancel = () => {
+    setIsCreateTrip(false);
+    setCity(null);
+    setStartDate("");
+    setEndDate("");
+  };
+
   return (
     <div
       className={isCreatTrip ? "modal__bg activ" : "modal__bg"}
-      onClick={() => setIsCreateTrip(false)}
+      onClick={handleCancel}
     >
       <div
         className={isCreatTrip ? "modal__conteiner activ" : "modal__conteiner"}
@@ -47,7 +58,7 @@ const Modal = () => {
           <button
             className="header__close_btn"
             type="submit"
-            onClick={() => setIsCreateTrip(false)}
+            onClick={handleCancel}
           >
             X
           </button>
@@ -64,9 +75,9 @@ const Modal = () => {
               className="select"
               placeholder="Search for city"
               debounceTimeout={600}
-              value={location}
+              value={city}
               onChange={handleOnChange}
-              loadOptions={getCityOptions}
+              loadOptions={getCities}
             />
           </div>
 
@@ -99,14 +110,15 @@ const Modal = () => {
         </div>
 
         <div className="footer">
-          <button
-            className="close_btn"
-            type="submit"
-            onClick={() => setIsCreateTrip(false)}
-          >
+          <button className="close_btn" type="submit" onClick={handleCancel}>
             Cancel
           </button>
-          <button className="add_btn" type="submit" onClick={handleAddTrip}>
+          <button
+            disabled={!startDate || !endDate || city === null}
+            className="add_btn"
+            type="submit"
+            onClick={handleAddTrip}
+          >
             Save
           </button>
         </div>

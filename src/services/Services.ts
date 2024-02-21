@@ -3,7 +3,7 @@ import { LocationResponse } from "../types/common";
 const GEO_URL = import.meta.env.VITE_API_GEO_URL;
 const GEO_KEY = import.meta.env.VITE_API_GEO_KEY;
 
-export const getCityOptions = async (inputValue: string) => {
+export const getCities = async (inputValue: string) => {
   const response = await fetch(
     `${GEO_URL}?minPopulation=10000&namePrefix=${inputValue}`,
     {

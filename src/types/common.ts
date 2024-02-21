@@ -22,16 +22,19 @@ export interface LocationResponse {
   }
 }
 
-export interface Location {
+export interface City {
   value: string;
   label: string;
 }
 
 export interface Trip {
+  id: string;
+  name: string;
   lat: string;
   lon: string;
   startDate: string;
   endDate: string;
+  img: string
 }
 
 // export Weather {

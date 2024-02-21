@@ -1,0 +1,78 @@
+.wrapper {
+  min-width: 150px;
+  height: calc(100% - 1px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.wrapper:hover .info {
+  border: 1px solid rgb(123, 221, 221);
+  border-top: none;
+}
+
+.image {
+  position: relative;
+  width: 100%;
+  height: 70%;
+  /* display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 5px; */
+  background-color: transparent;
+}
+
+img {
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+}
+
+.delete-icon-wrap {
+  all: unset;
+  position: absolute;
+  width: 25%;
+  height: 25%;
+  opacity: 0.8;
+  top: 0;
+  right: 0;
+  scale: 0;
+}
+
+.wrapper:hover .delete-icon-wrap {
+  scale: 1;
+  transition: all 0.4s;
+}
+
+.delete-icon {
+  width: 100%;
+  opacity: 0.5;
+}
+
+.delete-icon:hover {
+  opacity: unset;
+}
+
+.icon-path {
+  fill: red;
+}
+
+.info {
+  width: calc(100% - 2px);
+  height: 30%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: 1px solid lightgray;
+  border-top: none;
+}
+
+h5 {
+  text-align: center;
+  margin: 5px 0 5px 0;
+  font-weight: 600;
+}
+
+p {
+  font-size: 12px;
+}

@@ -1,7 +1,8 @@
 .trips-list {
-  width: 100%;
+  overflow-x: auto;
+  width: 780px;
   height: 200px;
-  background-color: #d7ebfd;
+  padding: 0 1px;
   display: flex;
-  gap: 15px;
+  gap: 30px;
 }

@@ -13,3 +13,10 @@ export const addTripAtom = atom(
     set(isCreatTripAtom, false)
   }
 )
+
+export const deleteTripAtom = atom(
+  null,
+  (_get, set, id: string) => {
+    set(tripsAtom, (prev) => prev.filter((trip) => !(trip.id === id)))
+  }
+)

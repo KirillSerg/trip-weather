@@ -16,7 +16,6 @@ const ButtonAddTrip = () => {
         <h1>+</h1>
         <p>add trip</p>
       </button>
-      <div className="info"></div>
     </div>
   );
 };
