@@ -1,3 +1,39 @@
+export interface LocationResponse {
+  data: [
+    {
+      id: number;
+      wikiDataId: string;
+      type: string;
+      city: string;
+      name: string;
+      country: string;
+      countryCode: string;
+      region: string;
+      regionCode: string;
+      regionWdId: string;
+      latitude: number;
+      longitude: number;
+      population: number;
+    }
+  ],
+  metadata: {
+    currentOffset: number;
+    totalCount: number;
+  }
+}
+
+export interface Location {
+  value: string;
+  label: string;
+}
+
+export interface Trip {
+  lat: string;
+  lon: string;
+  startDate: string;
+  endDate: string;
+}
+
 // export Weather {
 //   "latitude" : number;
 //   "longitude" : number;
