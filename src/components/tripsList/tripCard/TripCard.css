@@ -4,7 +4,14 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  cursor: pointer;
 }
+
+.active {
+  box-shadow: 0 4px 12px rgb(100, 178, 241);
+  transition: all 0.4s;
+}
+
 .wrapper:hover .info {
   border: 1px solid rgb(123, 221, 221);
   border-top: none;
@@ -14,11 +21,6 @@
   position: relative;
   width: 100%;
   height: 70%;
-  /* display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 5px; */
   background-color: transparent;
 }
 

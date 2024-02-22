@@ -5,7 +5,7 @@ import { addTripAtom, isCreatTripAtom } from "../../Store";
 import { getCities } from "../../services/Services";
 import { City } from "../../types/common";
 import "./Modal.css";
-import { mockImgCities } from "../../assets/mockCiyImg";
+import { mockImgCities } from "../../assets/mockCityImg";
 
 const Modal = () => {
   const [isCreatTrip, setIsCreateTrip] = useAtom(isCreatTripAtom);
@@ -15,7 +15,7 @@ const Modal = () => {
   const [startDate, setStartDate] = useState<string>("");
   const [endDate, setEndDate] = useState<string>("");
 
-  const handleOnChange = (searchData: City | null) => {
+  const handleOnSelect = (searchData: City | null) => {
     setCity(searchData);
   };
 
@@ -76,7 +76,7 @@ const Modal = () => {
               placeholder="Search for city"
               debounceTimeout={600}
               value={city}
-              onChange={handleOnChange}
+              onChange={handleOnSelect}
               loadOptions={getCities}
             />
           </div>

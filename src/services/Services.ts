@@ -1,4 +1,4 @@
-import { LocationResponse } from "../types/common";
+import { LocationResponse, Weather } from "../types/common";
 
 const GEO_URL = import.meta.env.VITE_API_GEO_URL;
 const GEO_KEY = import.meta.env.VITE_API_GEO_KEY;
@@ -26,12 +26,8 @@ export const getCities = async (inputValue: string) => {
     }),
   };
 };
-// https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/38.9697,-77.385/[date1]/[date2]?key=YOUR_API_KEY
-// https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/[city]/[date1]/[date2]?unitGroup=metric&include=days&key=YOUR_API_KEY&contentType=json
-// https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/[city]/today?unitGroup=metric&include=days&key=YOUR_API_KEY&contentType=json
 
-// "/38.9697,-77.385?include=days&key=HKDSKHGNYCSEBRB76GB6KKE9V&contentType=json"
-export const getForecast = async (location: string, period: string) => {
+export const getForecast = async (location: string, period: string): Promise<Weather> => {
   const response = await fetch(
     `${WEATHER_URL}/${location}/${period}?unitGroup=metric&include=days&key=${WEATHER_KEY}&contentType=json`, { method: "GET" }
   );
@@ -39,11 +35,10 @@ export const getForecast = async (location: string, period: string) => {
   return data;
 }
 
-export const getCurrentWeather = async (location: string) => {
+export const getCurrentWeather = async (location: string): Promise<Weather> => {
   const response = await fetch(
-    `${WEATHER_URL}/${location}/today?include=days&key=${WEATHER_KEY}&contentType=json`, { method: "GET" }
+    `${WEATHER_URL}/${location}/today?unitGroup=metric&include=days&key=${WEATHER_KEY}&contentType=json`, { method: "GET" }
   );
   const data = await response.json();
-  console.log(data)
   return data;
 }

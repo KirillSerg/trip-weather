@@ -1,5 +1,35 @@
 .today {
   width: 270px;
   height: 500px;
-  background-color: #d7ebfd;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: rgb(100, 178, 241);
+  border-radius: 5px;
+}
+
+.today > h3 {
+  font-size: 24px;
+}
+
+.today > .weather {
+  display: flex;
+}
+
+.today > .weather > img {
+  width: 72px;
+  margin-right: 20px;
+}
+
+.today > .weather > h1 {
+  font-size: 50px;
+  margin: 0;
+}
+.today > .weather > p {
+  padding-top: 10px;
+}
+
+.city {
+  font-weight: normal;
 }

@@ -6,6 +6,8 @@ export const isCreatTripAtom = atom(false)
 
 export const tripsAtom = atomWithStorage<Trip[]>("TripsList", [])
 
+export const selectedTripAtom = atom<Trip | null>(null)
+
 export const addTripAtom = atom(
   null,
   (_get, set, trip: Trip) => {
