@@ -5,7 +5,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background-color: rgb(100, 178, 241);
+  box-shadow: inset -4px -4px 15px 1px rgb(100, 178, 241);
   border-radius: 5px;
 }
 

@@ -8,8 +8,8 @@ const TripsList = () => {
   const tripsList = useAtomValue(tripsAtom);
   return (
     <div className="trips-list">
-      {tripsList.map((trip, i) => (
-        <TripCard key={i} {...trip} />
+      {tripsList.map((trip) => (
+        <TripCard key={trip.id} {...trip} />
       ))}
       <ButtonAddTrip />
     </div>

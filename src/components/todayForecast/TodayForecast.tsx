@@ -3,23 +3,22 @@ import "./TodayForecast.css";
 import { useEffect, useState } from "react";
 import { getCurrentWeather } from "../../services/Services";
 import { Weather } from "../../types/common";
-import { selectedTripAtom } from "../../Store";
+import { selectedTripAtom, tripsAtom } from "../../Store";
 import { getDayName } from "../../utilities/utility";
 
 const TodayForecast = () => {
   const [selectedTrip] = useAtom(selectedTripAtom);
+  const [trips] = useAtom(tripsAtom);
   const [currentWeather, setCurrentWeather] = useState<Weather | null>(null);
 
+  const trip = selectedTrip || trips[0];
+
   useEffect(() => {
-    if (selectedTrip) {
-      (async () => {
-        const weather = await getCurrentWeather(
-          `${selectedTrip.lat},${selectedTrip.lon}`
-        );
-        setCurrentWeather(weather);
-      })();
-    }
-  }, [selectedTrip]);
+    (async () => {
+      const weather = await getCurrentWeather(`${trip.lat},${trip.lon}`);
+      setCurrentWeather(weather);
+    })();
+  }, [trip]);
 
   return (
     <section className="today">
@@ -34,7 +33,7 @@ const TodayForecast = () => {
           <p>°C</p>
         </div>
       )}
-      <h4 className="city">{selectedTrip?.name}</h4>
+      <h4 className="city">{trip.name}</h4>
     </section>
   );
 };
