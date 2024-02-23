@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useAtom } from "jotai";
 import { AsyncPaginate } from "react-select-async-paginate";
 import { addTripAtom, isCreatTripAtom } from "../../Store";
@@ -15,8 +15,15 @@ const Modal = () => {
   const [startDate, setStartDate] = useState<string>("");
   const [endDate, setEndDate] = useState<string>("");
 
+  const isValidDate = useRef(false);
+
   const handleOnSelect = (searchData: City | null) => {
     setCity(searchData);
+  };
+
+  const handleOnChangeEndDate = (e: React.ChangeEvent<HTMLInputElement>) => {
+    isValidDate.current = Date.parse(startDate) <= Date.parse(e.target.value);
+    setEndDate(e.target.value);
   };
 
   const handleAddTrip = () => {
@@ -103,7 +110,7 @@ const Modal = () => {
               required
               name="enddate"
               type="date"
-              onChange={(e) => setEndDate(e.target.value)}
+              onChange={(e) => handleOnChangeEndDate(e)}
               value={endDate}
             />
           </div>
@@ -114,8 +121,10 @@ const Modal = () => {
             Cancel
           </button>
           <button
-            disabled={!startDate || !endDate || city === null}
-            className="add_btn"
+            disabled={!isValidDate.current || city === null}
+            className={`add_btn ${
+              isValidDate.current && city !== null ? "valid" : ""
+            }`}
             type="submit"
             onClick={handleAddTrip}
           >

@@ -1,6 +1,7 @@
 .forecast {
   height: 155px;
   box-shadow: inset -4px 4px 15px 1px rgb(100, 178, 241);
+  padding: 0 5px;
 }
 
 .title {

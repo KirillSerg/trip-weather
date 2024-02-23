@@ -1,33 +1,33 @@
 import { useEffect, useState } from "react";
-import { useAtom } from "jotai";
+import { useAtomValue } from "jotai";
 import { getForecast } from "../../services/Services";
 import { Weather } from "../../types/common";
 import { getDayName } from "../../utilities/utility";
-import { selectedTripAtom, tripsAtom } from "../../Store";
+import { onSelectTripAtom } from "../../Store";
 import "./Forecast.css";
 
 const Forecast = () => {
-  const [selectedTrip] = useAtom(selectedTripAtom);
-  const [trips] = useAtom(tripsAtom);
+  const selectedTrip = useAtomValue(onSelectTripAtom);
   const [forecast, setForecast] = useState<Weather | null>(null);
 
-  const trip = selectedTrip || trips[0];
-
   useEffect(() => {
-    const location = `${trip.lat},${trip.lon}`;
-    const period = `${trip.startDate}/${trip.endDate}`;
-
-    (async () => {
-      const weather = await getForecast(location, period);
-      setForecast(weather);
-    })();
-  }, [trip]);
+    if (selectedTrip) {
+      (async () => {
+        const location = `${selectedTrip.lat},${selectedTrip.lon}`;
+        const period = `${selectedTrip.startDate}/${selectedTrip.endDate}`;
+        const weather = await getForecast(location, period);
+        setForecast(weather);
+      })();
+    } else {
+      setForecast(null);
+    }
+  }, [selectedTrip]);
 
   return (
     <div className="forecast">
       <h4 className="title">By days</h4>
       <div className="list">
-        {forecast &&
+        {forecast ? (
           forecast.days.map((day) => {
             return (
               <div key={day.datetime} className="day">
@@ -38,7 +38,10 @@ const Forecast = () => {
                 )}°`}</p>
               </div>
             );
-          })}
+          })
+        ) : (
+          <p>select or create your trip</p>
+        )}
       </div>
     </div>
   );

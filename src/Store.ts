@@ -13,18 +13,65 @@ const initialTrip = {
 }
 
 export const isCreatTripAtom = atom(false)
+
 export const tripsAtom = atomWithStorage<Trip[]>("TripsList", [initialTrip])
+
+export const sortedTripsAtom = atom<Trip[]>((get) => get(tripsAtom).sort((a, b) => Date.parse(a.startDate) - Date.parse(b.startDate)))
+
 export const selectedTripAtom = atom<Trip | null>(null)
+export const onSelectTripAtom = atom(
+  (get) => get(selectedTripAtom),
+  (_get, set, trip: Trip | null) => {
+    set(selectedTripAtom, trip)
+    set(onSearchTripAtom, "")
+  }
+)
+
+export const searchedTripAtom = atom("")
+export const onSearchTripAtom = atom(
+  (get) => get(searchedTripAtom),
+  (_get, set, filter: string) => {
+    set(searchedTripAtom, filter)
+    set(onFilterTripsAtom, filter)
+  }
+)
+
+export const filteredTripsAtom = atom<Trip[]>([])
+export const onFilterTripsAtom = atom(
+  (get) => {
+    if (get(searchedTripAtom)) {
+      return get(filteredTripsAtom)
+    } else {
+      return get(sortedTripsAtom)
+    }
+  },
+  (get, set, filter: string) => {
+    if (filter) {
+      const filteredTrips = get(sortedTripsAtom).filter(
+        (trip) => trip.name.toLowerCase().includes(filter.toLowerCase())
+      )
+      set(filteredTripsAtom, filteredTrips)
+      set(onSelectTripAtom, null)
+    } else {
+      set(filteredTripsAtom, get(sortedTripsAtom))
+    }
+  }
+)
+
 export const addTripAtom = atom(
   null,
   (_get, set, trip: Trip) => {
     set(tripsAtom, (prev) => [...prev, trip])
     set(isCreatTripAtom, false)
+    set(selectedTripAtom, trip)
   }
 )
+
 export const deleteTripAtom = atom(
   null,
-  (_get, set, id: string) => {
+  (get, set, id: string) => {
     set(tripsAtom, (prev) => prev.filter((trip) => !(trip.id === id)))
+    set(onSelectTripAtom, get(onFilterTripsAtom)[1])
+    // set(selectedTripAtom, null)
   }
 )
