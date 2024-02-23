@@ -51,7 +51,7 @@ export const onFilterTripsAtom = atom(
         (trip) => trip.name.toLowerCase().includes(filter.toLowerCase())
       )
       set(filteredTripsAtom, filteredTrips)
-      set(onSelectTripAtom, null)
+      set(selectedTripAtom, null)
     } else {
       set(filteredTripsAtom, get(sortedTripsAtom))
     }
