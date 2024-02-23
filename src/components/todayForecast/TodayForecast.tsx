@@ -5,6 +5,7 @@ import { Weather } from "../../types/common";
 import { getDayName } from "../../utilities/utility";
 import { onSelectTripAtom } from "../../Store";
 import "./TodayForecast.css";
+import CountDown from "../countDown/CountDown";
 
 const TodayForecast = () => {
   const selectedTrip = useAtomValue(onSelectTripAtom);
@@ -41,6 +42,7 @@ const TodayForecast = () => {
       ) : (
         <p>select or create your trip</p>
       )}
+      <CountDown />
     </section>
   );
 };
