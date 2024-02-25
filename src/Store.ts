@@ -16,8 +16,13 @@ export const isCreatTripAtom = atom(false)
 export const searchedTripAtom = atom("")
 export const activeTripAtom = atom<Trip | null>(null)
 export const upcomingTripAtom = atom<Trip | null>(
-  (get) => get(filteredTripsAtom)
-    .reduce((acc, trip) => Date.parse(trip.startDate) - Date.now() > 0 && Date.parse(trip.startDate) - Date.now() < (Date.parse(acc.startDate) - Date.now()) ? acc = trip : acc)
+  (get) => {
+    if (get(filteredTripsAtom).length > 0) {
+      return get(filteredTripsAtom)
+        .reduce((acc, trip) => Date.parse(trip.startDate) - Date.now() > 0 && Date.parse(trip.startDate) - Date.now() < (Date.parse(acc.startDate) - Date.now()) ? acc = trip : acc)
+    }
+    return null;
+  }
 )
 export const tripsAtom = atomWithStorage<Trip[]>("Trips", [initialTrip])
 export const sortedTripsAtom = atom<Trip[]>(
