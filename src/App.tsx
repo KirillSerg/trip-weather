@@ -1,9 +1,9 @@
-import "./App.css";
-import Forecast from "./components/forecast/Forecast";
-import Modal from "./components/modal/Modal";
 import Search from "./components/search/Search";
-import TodayForecast from "./components/todayForecast/TodayForecast";
 import TripsList from "./components/tripsList/TripsList";
+import Forecast from "./components/forecast/Forecast";
+import TodayForecast from "./components/todayForecast/TodayForecast";
+import Modal from "./components/modal/Modal";
+import "./App.css";
 
 const App = () => {
   return (

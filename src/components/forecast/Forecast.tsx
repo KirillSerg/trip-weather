@@ -1,27 +1,30 @@
 import { useEffect, useState } from "react";
 import { useAtomValue } from "jotai";
+import { activeTripAtom, upcomingTripAtom } from "../../Store";
 import { getForecast } from "../../services/Services";
 import { Weather } from "../../types/common";
 import { getDayName } from "../../utilities/utility";
-import { onSelectTripAtom } from "../../Store";
 import "./Forecast.css";
 
 const Forecast = () => {
-  const selectedTrip = useAtomValue(onSelectTripAtom);
+  const activeTrip = useAtomValue(activeTripAtom);
+  const upcomingTrip = useAtomValue(upcomingTripAtom);
   const [forecast, setForecast] = useState<Weather | null>(null);
 
+  const trip = activeTrip || upcomingTrip;
+
   useEffect(() => {
-    if (selectedTrip) {
+    if (trip) {
+      const location = `${trip.lat},${trip.lon}`;
+      const period = `${trip.startDate}/${trip.endDate}`;
       (async () => {
-        const location = `${selectedTrip.lat},${selectedTrip.lon}`;
-        const period = `${selectedTrip.startDate}/${selectedTrip.endDate}`;
         const weather = await getForecast(location, period);
         setForecast(weather);
       })();
     } else {
       setForecast(null);
     }
-  }, [selectedTrip]);
+  }, [trip]);
 
   return (
     <div className="forecast">

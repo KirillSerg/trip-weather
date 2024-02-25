@@ -13,47 +13,23 @@ const initialTrip = {
 }
 
 export const isCreatTripAtom = atom(false)
-
-export const tripsAtom = atomWithStorage<Trip[]>("TripsList", [initialTrip])
-
-export const sortedTripsAtom = atom<Trip[]>((get) => get(tripsAtom).sort((a, b) => Date.parse(a.startDate) - Date.parse(b.startDate)))
-
-export const selectedTripAtom = atom<Trip | null>(null)
-export const onSelectTripAtom = atom(
-  (get) => get(selectedTripAtom),
-  (_get, set, trip: Trip | null) => {
-    set(selectedTripAtom, trip)
-    set(onSearchTripAtom, "")
-  }
-)
-
 export const searchedTripAtom = atom("")
-export const onSearchTripAtom = atom(
-  (get) => get(searchedTripAtom),
-  (_get, set, filter: string) => {
-    set(searchedTripAtom, filter)
-    set(onFilterTripsAtom, filter)
-  }
+export const activeTripAtom = atom<Trip | null>(null)
+export const upcomingTripAtom = atom<Trip | null>(
+  (get) => get(filteredTripsAtom)
+    .reduce((acc, trip) => Date.parse(trip.startDate) - Date.now() > 0 && Date.parse(trip.startDate) - Date.now() < (Date.parse(acc.startDate) - Date.now()) ? acc = trip : acc)
 )
-
-export const filteredTripsAtom = atom<Trip[]>([])
-export const onFilterTripsAtom = atom(
+export const tripsAtom = atomWithStorage<Trip[]>("Trips", [initialTrip])
+export const sortedTripsAtom = atom<Trip[]>(
+  (get) => get(tripsAtom).sort((a, b) => Date.parse(b.startDate) - Date.parse(a.startDate))
+)
+export const filteredTripsAtom = atom<Trip[]>(
   (get) => {
-    if (get(searchedTripAtom)) {
-      return get(filteredTripsAtom)
+    const search = get(searchedTripAtom).toLowerCase()
+    if (search) {
+      return get(sortedTripsAtom).filter((trip) => trip.name.toLowerCase().includes(search))
     } else {
       return get(sortedTripsAtom)
-    }
-  },
-  (get, set, filter: string) => {
-    if (filter) {
-      const filteredTrips = get(sortedTripsAtom).filter(
-        (trip) => trip.name.toLowerCase().includes(filter.toLowerCase())
-      )
-      set(filteredTripsAtom, filteredTrips)
-      set(selectedTripAtom, null)
-    } else {
-      set(filteredTripsAtom, get(sortedTripsAtom))
     }
   }
 )
@@ -63,15 +39,16 @@ export const addTripAtom = atom(
   (_get, set, trip: Trip) => {
     set(tripsAtom, (prev) => [...prev, trip])
     set(isCreatTripAtom, false)
-    set(selectedTripAtom, trip)
+    set(activeTripAtom, trip)
   }
 )
-
 export const deleteTripAtom = atom(
   null,
-  (get, set, id: string) => {
-    set(tripsAtom, (prev) => prev.filter((trip) => !(trip.id === id)))
-    set(onSelectTripAtom, get(onFilterTripsAtom)[1])
-    // set(selectedTripAtom, null)
+  (get, set, e: React.MouseEvent<HTMLButtonElement, MouseEvent>, id: string) => {
+    e.stopPropagation()
+    set(tripsAtom, (prev) => prev.filter((trip) => trip.id !== id))
+    if (get(activeTripAtom)?.id === id) {
+      set(activeTripAtom, null)
+    }
   }
 )

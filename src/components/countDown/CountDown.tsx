@@ -1,31 +1,33 @@
 import { useAtomValue } from "jotai";
-import "./CountDown.css";
-import { onSelectTripAtom } from "../../Store";
+import { activeTripAtom, upcomingTripAtom } from "../../Store";
 import useCountDown from "./useCountDown";
+import "./CountDown.css";
 
 const CountDown = () => {
-  const selectedTrip = useAtomValue(onSelectTripAtom);
+  const activeTrip = useAtomValue(activeTripAtom);
+  const upcomingTrip = useAtomValue(upcomingTripAtom);
+
   const { days, hours, minutes, seconds } = useCountDown(
-    selectedTrip?.startDate
+    activeTrip?.startDate || upcomingTrip?.startDate
   );
 
   return (
     <div className="counter">
       <span className="timeItem">
         {days}
-        <span>DAYS</span>
+        <span>Days</span>
       </span>
       <span className="timeItem">
         {hours}
-        <span>HOURS</span>
+        <span>Hours</span>
       </span>
       <span className="timeItem">
         {minutes}
-        <span>MINUTES</span>
+        <span>Minutes</span>
       </span>
       <span className="timeItem">
         {seconds}
-        <span>SECONDS</span>
+        <span>Seconds</span>
       </span>
     </div>
   );

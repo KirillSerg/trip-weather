@@ -10,6 +10,7 @@
 }
 
 .today > h3 {
+  margin: 0;
   font-size: 24px;
 }
 
@@ -31,5 +32,6 @@
 }
 
 .city {
+  margin: 0;
   font-weight: normal;
 }

@@ -1,21 +1,16 @@
-import "./Search.css";
 import { useAtom } from "jotai";
-import { onSearchTripAtom } from "../../Store";
+import { searchedTripAtom } from "../../Store";
+import "./Search.css";
 
 const Search = () => {
-  const [search, setSearch] = useAtom(onSearchTripAtom);
-
-  const onSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log(e.target.value);
-    setSearch(e.target.value);
-  };
+  const [searchedTrip, setSearchedTrip] = useAtom(searchedTripAtom);
 
   return (
     <input
       className="search"
       placeholder="Search your trip"
-      value={search}
-      onChange={(e) => onSearch(e)}
+      value={searchedTrip}
+      onChange={(e) => setSearchedTrip(e.target.value)}
     />
   );
 };

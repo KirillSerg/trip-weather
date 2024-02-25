@@ -1,28 +1,29 @@
 import { useEffect, useState } from "react";
 import { useAtomValue } from "jotai";
-import { getCurrentWeather } from "../../services/Services";
-import { Weather } from "../../types/common";
-import { getDayName } from "../../utilities/utility";
-import { onSelectTripAtom } from "../../Store";
-import "./TodayForecast.css";
+import { activeTripAtom, upcomingTripAtom } from "../../Store";
 import CountDown from "../countDown/CountDown";
+import { getCurrentWeather } from "../../services/Services";
+import { getDayName } from "../../utilities/utility";
+import { Weather } from "../../types/common";
+import "./TodayForecast.css";
 
 const TodayForecast = () => {
-  const selectedTrip = useAtomValue(onSelectTripAtom);
+  const activeTrip = useAtomValue(activeTripAtom);
+  const upcomingTrip = useAtomValue(upcomingTripAtom);
   const [currentWeather, setCurrentWeather] = useState<Weather | null>(null);
 
+  const trip = activeTrip || upcomingTrip;
+
   useEffect(() => {
-    if (selectedTrip) {
+    if (trip) {
       (async () => {
-        const weather = await getCurrentWeather(
-          `${selectedTrip.lat},${selectedTrip.lon}`
-        );
+        const weather = await getCurrentWeather(`${trip.lat},${trip.lon}`);
         setCurrentWeather(weather);
       })();
     } else {
       setCurrentWeather(null);
     }
-  }, [selectedTrip]);
+  }, [trip]);
 
   return (
     <section className="today">
@@ -37,7 +38,7 @@ const TodayForecast = () => {
             <h1>{Math.floor(currentWeather.days[0].temp)}</h1>
             <p>°C</p>
           </div>
-          <h4 className="city">{selectedTrip?.name}</h4>
+          <h4 className="city">{trip?.name}</h4>
         </>
       ) : (
         <p>select or create your trip</p>

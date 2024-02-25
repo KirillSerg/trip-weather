@@ -1,29 +1,23 @@
-import { useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useAtom } from "jotai";
-import { AsyncPaginate } from "react-select-async-paginate";
 import { addTripAtom, isCreatTripAtom } from "../../Store";
+import { AsyncPaginate } from "react-select-async-paginate";
 import { getCities } from "../../services/Services";
 import { City } from "../../types/common";
-import "./Modal.css";
 import { mockImgCities } from "../../assets/mockCityImg";
+import "./Modal.css";
 
 const Modal = () => {
   const [isCreatTrip, setIsCreateTrip] = useAtom(isCreatTripAtom);
+  const [, addTrip] = useAtom(addTripAtom);
 
   const [city, setCity] = useState<City | null>(null);
-  const [, addTrip] = useAtom(addTripAtom);
   const [startDate, setStartDate] = useState<string>("");
   const [endDate, setEndDate] = useState<string>("");
-
-  const isValidDate = useRef(false);
+  const [isValidForm, setIsValidForm] = useState<boolean>(false);
 
   const handleOnSelect = (searchData: City | null) => {
     setCity(searchData);
-  };
-
-  const handleOnChangeEndDate = (e: React.ChangeEvent<HTMLInputElement>) => {
-    isValidDate.current = Date.parse(startDate) <= Date.parse(e.target.value);
-    setEndDate(e.target.value);
   };
 
   const handleAddTrip = () => {
@@ -51,6 +45,12 @@ const Modal = () => {
     setEndDate("");
   };
 
+  useEffect(() => {
+    setIsValidForm(
+      Date.parse(startDate) <= Date.parse(endDate) && !!city?.label
+    );
+  }, [startDate, endDate, city]);
+
   return (
     <div
       className={isCreatTrip ? "modal__bg activ" : "modal__bg"}
@@ -75,7 +75,8 @@ const Modal = () => {
         <div className="inputs-group">
           <div className="inputs-group__group">
             <label htmlFor="location">
-              <span>*</span>City
+              <span>*</span>
+              City
             </label>
             <AsyncPaginate
               aria-label="location"
@@ -110,7 +111,7 @@ const Modal = () => {
               required
               name="enddate"
               type="date"
-              onChange={(e) => handleOnChangeEndDate(e)}
+              onChange={(e) => setEndDate(e.target.value)}
               value={endDate}
             />
           </div>
@@ -121,10 +122,8 @@ const Modal = () => {
             Cancel
           </button>
           <button
-            disabled={!isValidDate.current || city === null}
-            className={`add_btn ${
-              isValidDate.current && city !== null ? "valid" : ""
-            }`}
+            disabled={!isValidForm}
+            className={`add_btn ${isValidForm ? "valid" : ""}`}
             type="submit"
             onClick={handleAddTrip}
           >

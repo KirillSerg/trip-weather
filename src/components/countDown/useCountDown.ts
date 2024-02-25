@@ -11,8 +11,9 @@ const useCountDown = (tripStart?: string) => {
   useEffect(() => {
     const interval = setInterval(() => {
       if (tripStart) {
+        const startDate = new Date(new Date(tripStart).toLocaleDateString())
         const now = new Date();
-        const difference = new Date(tripStart).getTime() - now.getTime();
+        const difference = startDate.getTime() - now.getTime();
         const days = Math.floor(difference / (1000 * 60 * 60 * 24));
         const hours = Math.floor(
           (difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
@@ -29,7 +30,10 @@ const useCountDown = (tripStart?: string) => {
       }
     }, 1000);
 
-    return () => clearInterval(interval);
+    return () => {
+      setCountdown({ days: 0, hours: 0, minutes: 0, seconds: 0 });
+      clearInterval(interval)
+    };
   }, [tripStart]);
 
   return countdown;

@@ -1,15 +1,15 @@
 import { useAtomValue } from "jotai";
-import "./TripsList.css";
 import ButtonAddTrip from "./buttonAddTrip/ButtonAddTrip";
-import { onFilterTripsAtom } from "../../Store";
+import { filteredTripsAtom } from "../../Store";
 import TripCard from "./tripCard/TripCard";
+import "./TripsList.css";
 
 const TripsList = () => {
-  const filteredTripsList = useAtomValue(onFilterTripsAtom);
+  const filteredTrips = useAtomValue(filteredTripsAtom);
 
   return (
     <div className="trips-list">
-      {filteredTripsList.map((trip) => (
+      {filteredTrips.map((trip) => (
         <TripCard key={trip.id} {...trip} />
       ))}
       <ButtonAddTrip />
