@@ -17,8 +17,12 @@ const TodayForecast = () => {
   useEffect(() => {
     if (trip) {
       (async () => {
-        const weather = await getCurrentWeather(`${trip.lat},${trip.lon}`);
-        setCurrentWeather(weather);
+        try {
+          const weather = await getCurrentWeather(`${trip.lat},${trip.lon}`);
+          setCurrentWeather(weather);
+        } catch (error) {
+          setCurrentWeather(null);
+        }
       })();
     } else {
       setCurrentWeather(null);

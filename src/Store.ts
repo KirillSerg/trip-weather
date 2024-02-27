@@ -3,7 +3,7 @@ import { Trip } from "./types/common";
 import { atomWithStorage } from 'jotai/utils'
 
 const initialTrip = {
-  id: "2f54ad2b-a947-4c82-b6c2-ad251866ffdf",
+  id: crypto.randomUUID(),
   img: "https://upload.wikimedia.org/wikipedia/commons/4/47/New_york_times_square-terabass.jpg",
   lat: "47.91",
   lon: "33.39",

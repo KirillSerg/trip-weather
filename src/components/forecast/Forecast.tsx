@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useAtomValue } from "jotai";
 import { activeTripAtom, upcomingTripAtom } from "../../Store";
 import { getForecast } from "../../services/Services";
@@ -13,13 +13,31 @@ const Forecast = () => {
 
   const trip = activeTrip || upcomingTrip;
 
+  const carusel = useRef<HTMLDivElement>(null);
+
+  const onScroll = (e: React.WheelEvent<HTMLDivElement>) => {
+    if (carusel.current) {
+      carusel.current.scrollLeft += e.deltaY;
+    }
+  };
+
+  const onClickBtn = (direction: number) => {
+    if (carusel.current) {
+      carusel.current.scrollLeft += direction * 80;
+    }
+  };
+
   useEffect(() => {
     if (trip) {
-      const location = `${trip.lat},${trip.lon}`;
-      const period = `${trip.startDate}/${trip.endDate}`;
       (async () => {
-        const weather = await getForecast(location, period);
-        setForecast(weather);
+        try {
+          const location = `${trip.lat},${trip.lon}`;
+          const period = `${trip.startDate}/${trip.endDate}`;
+          const weather = await getForecast(location, period);
+          setForecast(weather);
+        } catch (err) {
+          setForecast(null);
+        }
       })();
     } else {
       setForecast(null);
@@ -29,7 +47,15 @@ const Forecast = () => {
   return (
     <div className="forecast">
       <h4 className="title">By days</h4>
-      <div className="list">
+      <div ref={carusel} className="list" id="list" onWheel={onScroll}>
+        <button
+          className={`control_btn_left ${
+            forecast && forecast?.days.length > 15 && "active"
+          }`}
+          onClick={() => onClickBtn(-1)}
+        >
+          {"<"}
+        </button>
         {forecast ? (
           forecast.days.map((day) => {
             return (
@@ -45,6 +71,14 @@ const Forecast = () => {
         ) : (
           <p>select or create your trip</p>
         )}
+        <button
+          className={`control_btn_right ${
+            forecast && forecast?.days.length > 15 && "active"
+          }`}
+          onClick={() => onClickBtn(1)}
+        >
+          {">"}
+        </button>
       </div>
     </div>
   );

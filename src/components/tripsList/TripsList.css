@@ -1,8 +1,48 @@
+.trips {
+  width: 780px;
+  position: relative;
+}
+
 .trips-list {
   overflow-x: auto;
-  width: 780px;
   height: 200px;
-  padding: 0 10px;
+  padding: 0 25px;
   display: flex;
   gap: 30px;
+}
+
+.control_btn_left {
+  all: unset;
+  position: absolute;
+  display: none;
+  left: 0;
+  width: 20px;
+  height: 100%;
+  text-align: center;
+  font-size: 24px;
+  background-color: rgba(77, 76, 76, 0.5);
+}
+
+.control_btn_right {
+  all: unset;
+  display: none;
+  position: absolute;
+  right: 0;
+  width: 20px;
+  height: 100%;
+  text-align: center;
+  font-size: 24px;
+  background-color: rgba(77, 76, 76, 0.5);
+}
+
+.trips-list .control_btn_right:hover,
+.trips-list .control_btn_left:hover {
+  cursor: pointer;
+  background-color: rgba(48, 47, 47, 0.8);
+  transition: all 0.4s;
+}
+
+.control_btn_left.active,
+.control_btn_right.active {
+  display: block;
 }

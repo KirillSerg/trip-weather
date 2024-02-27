@@ -31,6 +31,9 @@ export const getForecast = async (location: string, period: string): Promise<Wea
   const response = await fetch(
     `${WEATHER_URL}/${location}/${period}?unitGroup=metric&include=days&key=${WEATHER_KEY}&contentType=json`, { method: "GET" }
   );
+  if (response.status === 429) {
+    alert("The limit of free requests to the weather API has ended for today")
+  }
   const data = await response.json();
   return data;
 }
@@ -39,6 +42,9 @@ export const getCurrentWeather = async (location: string): Promise<Weather> => {
   const response = await fetch(
     `${WEATHER_URL}/${location}/today?unitGroup=metric&include=days&key=${WEATHER_KEY}&contentType=json`, { method: "GET" }
   );
+  if (response.status === 429) {
+    alert("The limit of free requests to the weather API has ended for today")
+  }
   const data = await response.json();
   return data;
 }

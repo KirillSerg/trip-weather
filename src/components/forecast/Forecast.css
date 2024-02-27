@@ -2,6 +2,7 @@
   height: 155px;
   box-shadow: inset -4px 4px 15px 1px rgb(100, 178, 241);
   padding: 0 5px;
+  position: relative;
 }
 
 .title {
@@ -11,10 +12,47 @@
 
 .list {
   overflow-x: auto;
-  width: 780px;
+  /* width: 780px; */
   height: calc(100% - 17%);
   display: flex;
+  padding: 0 20px;
   gap: 30px;
+}
+
+.list .control_btn_left {
+  all: unset;
+  position: absolute;
+  display: none;
+  left: 0;
+  width: 20px;
+  height: 83%;
+  text-align: center;
+  font-size: 24px;
+  background-color: rgba(77, 76, 76, 0.5);
+}
+
+.list .control_btn_right {
+  all: unset;
+  position: absolute;
+  display: none;
+  right: 0;
+  width: 20px;
+  height: 83%;
+  text-align: center;
+  font-size: 24px;
+  background-color: rgba(77, 76, 76, 0.5);
+}
+
+.list .control_btn_right:hover,
+.list .control_btn_left:hover {
+  cursor: pointer;
+  background-color: rgba(48, 47, 47, 0.8);
+  transition: all 0.4s;
+}
+
+.control_btn_left.active,
+.control_btn_right.active {
+  display: block;
 }
 
 .day {
